@@ -35,7 +35,9 @@ function convertToObject(sourceString) {
       // Start a new declaration
       const [key, ...valueParts] = line.split(':').map(part => part.trim());
       currentKey = key;
-      currentValue.push(valueParts.join(':').trim());
+      // capture everything after the colon as a value
+      const valueString = valueParts.join(':').trim();
+      currentValue.push(valueString);
     } else if (currentKey) {
       // This is a continuation of the previous value
       currentValue.push(line.trim());
