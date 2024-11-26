@@ -23,7 +23,7 @@ function convertToObject(sourceString) {
     if (line.includes(':')) {
       // If we had a previous declaration, save it
       if (currentKey) {
-        styleSheet[currentKey] = currentValue.trim().replace(/;+$/, '');
+        styleSheet[currentKey] = currentValue.trim().replace(/;+$/, '').trim();
       }
 
       // Start a new declaration
@@ -38,7 +38,7 @@ function convertToObject(sourceString) {
 
   // Save the last declaration
   if (currentKey) {
-    styleSheet[currentKey] = currentValue.trim().replace(/;+$/, '');
+    styleSheet[currentKey] = currentValue.trim().replace(/;+$/, '').trim();
   }
   return styleSheet;
 }
