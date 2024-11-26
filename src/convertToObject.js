@@ -45,7 +45,6 @@ function convertToObject(sourceString) {
   // Save the last declaration
   if (currentKey) {
     styleSheet[currentKey] = currentValue
-    .join('\n')
     .trim()
     .replace(/;+$/, '')
     .trim();
