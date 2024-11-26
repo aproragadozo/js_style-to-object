@@ -10,7 +10,7 @@ function convertToObject(sourceString) {
   const styleSheet = {};
 
   const cleanedString = sourceString
-    .replace(/\s*\n\s*/g, ' ') // Replace line breaks with spaces
+    //.replace(/\s*\n\s*/g, ' ') // Replace line breaks with spaces
     .replace(/\s*;\s*/g, ';') // Normalize semicolons
     .trim();
   
