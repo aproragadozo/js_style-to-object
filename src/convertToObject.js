@@ -19,13 +19,14 @@ function convertToObject(sourceString) {
     .split(';')
     .filter(decl => decl.trim());
   
-  for (const declaration of declarations) {
-    // Split each declaration into key and value
-    const [key, ...valueParts] = declaration.split(':').map(part => part.trim());
-    
-    if (key) {
-      // Join value parts in case of multiple colons, trim
-      const value = valueParts.join(':').trim().replace(/;+$/, '');
+    for (const declaration of declarations) {
+      // Find the first colon to split key and value
+      const colonIndex = declaration.indexOf(':');
+      
+      if (colonIndex !== -1) {
+        // Extract key and value
+        const key = declaration.slice(0, colonIndex).trim();
+        const value = declaration.slice(colonIndex + 1).trim();
       
       // Add to styleSheet
       styleSheet[key] = value;
