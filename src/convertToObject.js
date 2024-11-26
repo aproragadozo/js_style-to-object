@@ -16,7 +16,7 @@ function convertToObject(sourceString) {
     .filter(line => line.trim() && line.trim() !== ';');
   
   let currentKey = null;
-  let currentValue = [];
+  let currentValue = null;
 
   for (const line of processedString) {
     // Check if this line is a new declaration
@@ -24,7 +24,6 @@ function convertToObject(sourceString) {
       // If we had a previous declaration, save it
       if (currentKey) {
         styleSheet[currentKey] = currentValue
-        .join('\n')
         .trim()
         .replace(/;+$/, '')
         .trim();
@@ -36,11 +35,10 @@ function convertToObject(sourceString) {
       const [key, ...valueParts] = line.split(':').map(part => part.trim());
       currentKey = key;
       // capture everything after the colon as a value
-      const valueString = valueParts.join(':').trim();
-      currentValue.push(valueString);
+      currentValue = valueParts.join(':').trim();
     } else if (currentKey) {
       // This is a continuation of the previous value
-      currentValue.push(line.trim());
+      currentValue += '\n' + line.trim();
     }
   }
 
