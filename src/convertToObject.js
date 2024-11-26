@@ -9,50 +9,27 @@ function convertToObject(sourceString) {
   // result object declaration
   const styleSheet = {};
 
-  // Normalize the string, but preserve line breaks
-  const processedString = sourceString
-    .replace(/\n\s*\n/g, '\n') // Remove completely empty lines
-    .split('\n')
-    .filter(line => line.trim() && line.trim() !== ';');
-  
-  let currentKey = null;
-  let currentValue = null;
-  let firstLinePreserved = false;
-
-  for (const line of processedString) {
-    // Check if this line is a new declaration
-    if (line.includes(':')) {
-      // If we had a previous declaration, save it
-      if (currentKey) {
-        styleSheet[currentKey] = currentValue
-        .trim()
-        .replace(/;+$/, '')
-        .trim();
-
-        firstLinePreserved = false;
-      }
-
-      // Start a new declaration
-      const [key, ...valueParts] = line.split(':').map(part => part.trim());
-      currentKey = key;
-      // capture everything after the colon as a value
-      currentValue = valueParts.join(':').trim();
-      firstLinePreserved = true;
-    } else if (currentKey && !firstLinePreserved) {
-      // This is a continuation of the previous value
-      currentValue += ',\n' + line.trim();
-      firstLinePreserved = true;
-    } else if(currentKey) {
-      currentValue += '\n' + line.trim();
-    }
-  }
-
-  // Save the last declaration
-  if (currentKey) {
-    styleSheet[currentKey] = currentValue
-    .trim()
-    .replace(/;+$/, '')
+  const cleanedString = sourceString
+    .replace(/\s*\n\s*/g, ' ') // Replace line breaks with spaces
+    .replace(/\s*;\s*/g, ';') // Normalize semicolons
     .trim();
+  
+  // Split declarations, handling multiple declarations in one line
+  const declarations = cleanedString
+    .split(';')
+    .filter(decl => decl.trim());
+  
+  for (const declaration of declarations) {
+    // Split each declaration into key and value
+    const [key, ...valueParts] = declaration.split(':').map(part => part.trim());
+    
+    if (key) {
+      // Join value parts in case of multiple colons, trim
+      const value = valueParts.join(':').trim().replace(/;+$/, '');
+      
+      // Add to styleSheet
+      styleSheet[key] = value;
+    }
   }
   return styleSheet;
 }
