@@ -16,29 +16,39 @@ function convertToObject(sourceString) {
     .filter(line => line.trim() && line.trim() !== ';');
   
   let currentKey = null;
-  let currentValue = null;
+  let currentValue = [];
 
   for (const line of processedString) {
     // Check if this line is a new declaration
     if (line.includes(':')) {
       // If we had a previous declaration, save it
       if (currentKey) {
-        styleSheet[currentKey] = currentValue.trim().replace(/;+$/, '').trim();
+        styleSheet[currentKey] = currentValue
+        .join('\n')
+        .trim()
+        .replace(/;+$/, '')
+        .trim();
+
+        currentValue = [];
       }
 
       // Start a new declaration
       const [key, ...valueParts] = line.split(':').map(part => part.trim());
       currentKey = key;
-      currentValue = valueParts.join(':');
+      currentValue.push(valueParts.join(':').trim());
     } else if (currentKey) {
       // This is a continuation of the previous value
-      currentValue += '\n' + line.trim();
+      currentValue.push(line.trim());
     }
   }
 
   // Save the last declaration
   if (currentKey) {
-    styleSheet[currentKey] = currentValue.trim().replace(/;+$/, '').trim();
+    styleSheet[currentKey] = currentValue
+    join('\n')
+    .trim()
+    .replace(/;+$/, '')
+    .trim();
   }
   return styleSheet;
 }
