@@ -11,7 +11,7 @@ function convertToObject(sourceString) {
 
   const processedString = sourceString
     .replace(/\n\s*\n/g, '\n') // Remove completely empty lines
-    .replace(/;\s*\n\s*\)/g, ' )') // Handle semicolon-newline-closing parenthesis
+    .replace(/;\s*\n\s*\)/g, ' )') // emicolon-newline-closing paren
     .replace(/\n\s*/g, ' '); // Replace newlines with spaces
   
   // Split into declarations
